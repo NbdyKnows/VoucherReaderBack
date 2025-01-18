@@ -1,0 +1,66 @@
+# Compiled output
+/dist
+/build
+/node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Tests
+/coverage
+/.nyc_output
+/test-results/
+
+# IDEs and editors
+/.idea/
+/.project
+/.classpath
+/.settings/
+/.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Temporary directories
+/temp
+/tmp
+/uploads
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Miscellaneous
+*.bak
+*.swp
+*.swo
+*.tmp
+
+# JSON files (if generated dynamically)
+*.json
+!package.json
+!tsconfig.json
+!tsconfig.build.json
