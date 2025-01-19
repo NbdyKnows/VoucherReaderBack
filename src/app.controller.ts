@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors, Body } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { Express } from 'express';
@@ -10,7 +10,11 @@ export class AppController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadVoucher(@UploadedFile() file: Express.Multer.File) {
-    console.log('File received in controller:', file); // Verificar el contenido del archivo
     return this.appService.uploadVoucher(file);
+  }
+
+  @Post('save')
+  async saveVoucherData(@Body() extractedData: { name: string, amount: number, date: string, operationNumber: string }) {
+    return this.appService.saveVoucherData(extractedData);
   }
 }

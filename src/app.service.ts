@@ -1,8 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
-import { v4 as uuidv4 } from 'uuid';
-import { Express } from 'express';
 import Groq from 'groq-sdk';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -70,11 +68,33 @@ export class AppService {
     const extractedData = this.extractImportantData(detections);
     console.log('Extracted data:', extractedData); // Verificar los datos extraídos
 
-    if (!extractedData.amount || !extractedData.date || !extractedData.transactionNumber) {
-      return { success: false, message: 'Información Soportada no Encontrada (monto, fecha y número de transacción)', data: extractedData };
+    if (!extractedData.amount || !extractedData.date || !extractedData.operationNumber || !extractedData.name) {
+      return { success: false, message: 'Información Soportada no Encontrada (nombre, monto, fecha y número de operación)', data: extractedData };
     }
 
     return { success: true, data: extractedData };
+  }
+
+  async saveVoucherData(extractedData: { name: string, amount: number, date: string, operationNumber: string }) {
+    const { name, amount, date, operationNumber } = extractedData;
+
+    const { data, error } = await this.supabase
+      .from('Facturas')
+      .insert([
+        {
+          name,
+          amount,
+          date,
+          operationNumber,
+        },
+      ])
+      .select(); // Asegurarse de que los datos insertados se devuelvan
+
+    if (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return { success: true, data };
   }
 
   encodeImage(imagePath: string): string {
@@ -85,14 +105,15 @@ export class AppService {
   extractImportantData(detections: string) {
     try {
       const data = JSON.parse(detections);
+      const name = data.name || null;
       const amount = data.amount || null;
       const date = data.date ? String(data.date) : null;
       const operationNumber = data.operationNumber ? String(data.operationNumber) : null;
 
-      return { amount, date, operationNumber };
+      return { name, amount, date, operationNumber };
     } catch (error) {
       console.error('Error parsing detections:', error);
-      return { amount: null, date: null, transactionNumber: null };
+      return { name: null, amount: null, date: null, operationNumber: null };
     }
   }
 }
