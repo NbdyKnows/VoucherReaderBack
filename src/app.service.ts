@@ -1,8 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
-import { v4 as uuidv4 } from 'uuid';
-import { Express } from 'express';
 import Groq from 'groq-sdk';
 import * as fs from 'fs';
 import * as path from 'path';
