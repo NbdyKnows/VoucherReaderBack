@@ -93,13 +93,26 @@ export class AppService {
           operationNumber,
         },
       ])
-      .select(); // Asegurarse de que los datos insertados se devuelvan
+      .select(); // Esto confirma que los datos enviados regresen
 
     if (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return { success: true, data };
+  }
+
+  async getVouchers(page: number, limit: number = 5) {
+    const { data, error } = await this.supabase
+      .from('Facturas')
+      .select('name, amount, date, operationNumber, created_at')
+      .range((page - 1) * limit, page * limit - 1);
+
+    if (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return data;
   }
 
   encodeImage(imagePath: string): string {
