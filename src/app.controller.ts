@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Body, Get , Query} from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors, Body, Get, Query } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { Express } from 'express';
@@ -27,6 +27,7 @@ export class AppController {
 
   @Get('all')
   async getVouchers(@Query('page') page: number) {
-    return this.appService.getVouchers(page);
+    const pageNumber = page ? Number(page) : 1;
+    return this.appService.getVouchers(pageNumber);
   }
 }
