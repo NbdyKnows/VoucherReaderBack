@@ -60,7 +60,6 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 *.tmp
 
 # JSON files (if generated dynamically)
-*.json
 !package.json
 !tsconfig.json
 !tsconfig.build.json
